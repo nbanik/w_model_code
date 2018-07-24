@@ -71,7 +71,7 @@ def alph2AS(z,ar,at):
 	epsiloni3 = alpha_perp/alpha_pl
 	DVbar = alpha*DV_fid/rd_fid
 	Fbar = epsiloni3*F_fid
-	print H_fid,DA_fid,DV_fid, F_fid
+	#print H_fid,DA_fid,DV_fid, F_fid
 	return DVbar,Fbar
 
 def alph2DA(z,alph,err,om,lam,h=.7,w=-1.):
@@ -98,7 +98,7 @@ def alphtheta(z,omf,hf,obhhf,om,h,obhh):
 	dn = distance(om,1.-om,h=h,obhh=obhh)
 	thbaofid = dfid.rs/dfid.dc(z)
 	thbaon = dn.rs/dn.dc(z)
-	print dfid.rs/dn.rs
+	#print dfid.rs/dn.rs
 	return thbaon/thbaofid
 
 
@@ -106,32 +106,32 @@ def alphtheta(z,omf,hf,obhhf,om,h,obhh):
 class distance:
 # I know I spelled lambda wrong but do YOU know WHY?
     def __init__(self,omega=0.3,lamda=0.7,h=1,w=-1.,gam=.557,obhh=.0224):
-		self.gamma = gam
-		self.w = w
-		self.fa = -3.*(1.+w)
-		self.obhh = obhh
-		self.om = float(omega)
-		self.ol = float(lamda)
-		self.h0 = float(h)
-		self.c = 2997.9 # speed of light in km/centi-second
-		self.K = (h**2.)*(omega+lamda-1.) # Curvature parameter
-		self.g0 = 2.5*self.om/(self.om**0.571428571-self.ol+((1+(0.5*self.om))*(1+(0.014285714*self.ol))))
+	        self.gamma = gam
+	        self.w = w
+	        self.fa = -3.*(1.+w)
+	        self.obhh = obhh
+	        self.om = float(omega)
+	        self.ol = float(lamda)
+	        self.h0 = float(h)
+	        self.c = 2997.9 # speed of light in km/centi-second
+	        self.K = (h**2.)*(omega+lamda-1.) # Curvature parameter
+	        self.g0 = 2.5*self.om/(self.om**0.571428571-self.ol+((1+(0.5*self.om))*(1+(0.014285714*self.ol))))
    # above is approximate Local linear growth factor
 	#below are factors to obtain physical bao scale		
-		self.tfac = 2.725/2.7
-		tp =2.725/2.73
-		omhh = self.om*h*h
+	        self.tfac = 2.725/2.7
+	        tp =2.725/2.73
+	        omhh = self.om*h*h
 		
 		#zeq = 25000.*omhh/self.tfac**4.		
-		zeq = 23900*omhh/tp**4.-1.
+	        zeq = 23900*omhh/tp**4.-1.
 		#keq = .0746*omhh/self.tfac/self.tfac
-		keq = 1./self.c*sqrt(2.*omhh*zeq)
-		b1 = 0.313*(omhh)**(-.419)*(1.+.607*omhh**.674)
-		b2 = .238*omhh**.223
-		zd = 1291.*omhh**.251/(1.+.659*omhh**.828)*(1.+b1*obhh**b2)
-		Req = self.RR(zeq)
-		Rd = self.RR(zd)
-		self.rs = 2./(3.*keq)*sqrt(6./Req)*log((sqrt(1.+Rd)+sqrt(Rd+Req))/(1.+sqrt(Req)))
+	        keq = 1./self.c*sqrt(2.*omhh*zeq)
+	        b1 = 0.313*(omhh)**(-.419)*(1.+.607*omhh**.674)
+	        b2 = .238*omhh**.223
+	        zd = 1291.*omhh**.251/(1.+.659*omhh**.828)*(1.+b1*obhh**b2)
+	        Req = self.RR(zeq)
+	        Rd = self.RR(zd)
+	        self.rs = 2./(3.*keq)*sqrt(6./Req)*log((sqrt(1.+Rd)+sqrt(Rd+Req))/(1.+sqrt(Req)))
 		#print self.rs
 	
     def RR(self,z):
@@ -157,48 +157,48 @@ class distance:
     def dl(self, z):   # Luminosity distance from now to z
         return self.dc(z)*(1.+z)
     def dc(self, z): # Comoving distance from now to z
-		return ((self.c/self.h0)*rom(0,z,self.evolution))    
-#        
+        return ((self.c/self.h0)*rom(0,z,self.evolution))
+
     def dc2z(self,x):
-		zup = 1.
-		zdown = .001
-		xup = self.dc(zup)
-		xdown = self.dc(zdown)
-		zt = (zup+zdown)/2.
-		xt = self.dc(zt)
-		while abs(xt - x) > .001:
-			while xdown > x:
-				zdown = zdown - .1
-				xdown = self.dc(zdown)
-				print zdown,xdown,x
-			if abs(x - xdown) < abs(xup - x):
-				zup = zt
-				xup = xt
-				zt = (zdown+zt)/2.
-				xt = self.dc(zt)
-			else:
-				zdown = zt
-				xdown = xt
-				zt = (zup+zt)/2.
-				xt = self.dc(zt)
-			#if xt > 707.675:
-			print xt,zt,zdown,zup,xdown,xup
-		return zt
+        zup = 1.
+        zdown = .001
+        xup = self.dc(zup)
+        xdown = self.dc(zdown)
+        zt = (zup+zdown)/2.
+        xt = self.dc(zt)
+        while abs(xt - x) > .001:
+            while xdown > x:
+                zdown = zdown - .1
+                xdown = self.dc(zdown)
+                #print zdown,xdown,x
+            if abs(x - xdown) < abs(xup - x):
+                zup = zt
+                xup = xt
+                zt = (zdown+zt)/2.
+                xt = self.dc(zt)
+            else:
+                zdown = zt
+                xdown = xt
+                zt = (zup+zt)/2.
+                xt = self.dc(zt)
+            #if xt > 707.675:
+            #print xt,zt,zdown,zup,xdown,xup
+        return zt
 
     def mkD(self,zb=.01):
-		Dl = []
-		oldD = 1.
-		olda = 1.
-		for i in range(0,2000000):
-			z = .001*i
-			a = 1./(1.+z)
-			da = a - olda
-			aev = 1./(1.+z+.0005)
-			D = oldD + da*oldD*(self.om/(self.om+self.ol*aev**3.))**self.gamma/aev
-			Dl.append(D)
-			oldD = D
-			olda = a
-		return Dl
+        Dl = []
+        oldD = 1.
+        olda = 1.
+        for i in range(0,2000000):
+            z = .001*i
+            a = 1./(1.+z)
+            da = a - olda
+            aev = 1./(1.+z+.0005)
+            D = oldD + da*oldD*(self.om/(self.om+self.ol*aev**3.))**self.gamma/aev
+            Dl.append(D)
+            oldD = D
+            olda = a
+        return Dl
 
 
     
@@ -223,42 +223,42 @@ class distance:
 		
     
     def ngobsfunc(self,z,dndzfile='nzDR5VL20.5_mrs'):
-    	
-    	dndzcomfile=dndzfile+'_ref.dat'
-    	ind = int(z*1000)
-    	#print dndzfile,dndzcomfile
-    	f = open(dndzfile+'.dat').readlines()
-    	dz = .001
-    	fcom = open(dndzcomfile).readlines()
-    	nz = float(f[ind].split()[1])
-    	
-    	if nz == 0:
-    		return 0,0
-    	indcom = ind-100 #if using file that starts from z = .1
-    	#indcom = ind
-    	if indcom<0:
-    		return 'problem with your zrange'
-    	nzcom = float(fcom[indcom].split()[1])
-    	if nzcom == 0:
-    		#zweight = 0
-			zfac = 0
-			return 0,0
-    	else:
-    		#zweight = nzcom**2.
-    		zweight = nzcom
-    		#zweight = 1.
-    		#if z > .4:
-    		#	zweight = (nz/float(fcom[400].split()[1]))**2.
-    		#zfac = nz/nzcom
-    		
-    	#volel = self.dc(z)**2.*(self.c/self.h0)*self.evolution(z)*(1.+z)**-3.*dz*zfac
-    	#volel = 4.*pi*self.dc(z)**2.*(self.c/self.h0)*self.evolution(z)*(1.+z)**-3.*dz
-    	volel = 4.*pi*self.dc(z)**2.*(self.c/self.h0)*self.evolution(z)*dz
-    	nel = nz*zweight/volel
-    	#nel = nz/volel
-    	#print z,nel,nz,volel,zfac
-    	return nel,zweight
-    	#return nel
+
+        dndzcomfile=dndzfile+'_ref.dat'
+        ind = int(z*1000)
+        #print dndzfile,dndzcomfile
+        f = open(dndzfile+'.dat').readlines()
+        dz = .001
+        fcom = open(dndzcomfile).readlines()
+        nz = float(f[ind].split()[1])
+
+        if nz == 0:
+            return 0,0
+        indcom = ind-100 #if using file that starts from z = .1
+        #indcom = ind
+        if indcom<0:
+            return 'problem with your zrange'
+        nzcom = float(fcom[indcom].split()[1])
+        if nzcom == 0:
+            #zweight = 0
+            zfac = 0
+            return 0,0
+        else:
+            #zweight = nzcom**2.
+            zweight = nzcom
+            #zweight = 1.
+            #if z > .4:
+            #	zweight = (nz/float(fcom[400].split()[1]))**2.
+            #zfac = nz/nzcom
+
+        #volel = self.dc(z)**2.*(self.c/self.h0)*self.evolution(z)*(1.+z)**-3.*dz*zfac
+        #volel = 4.*pi*self.dc(z)**2.*(self.c/self.h0)*self.evolution(z)*(1.+z)**-3.*dz
+        volel = 4.*pi*self.dc(z)**2.*(self.c/self.h0)*self.evolution(z)*dz
+        nel = nz*zweight/volel
+        #nel = nz/volel
+        #print z,nel,nz,volel,zfac
+        return nel,zweight
+        #return nel
     	
     def ngobs(self,z1,z2,dzfile='nzDR5VL20.5_mrs'):
     	obdeg = 5406.5453944537448
@@ -266,7 +266,7 @@ class distance:
     	sphfac = obdeg/spheredeg
     	zweighttot = 0
     	ntot = 0
-    	print dzfile
+    	#print dzfile
     	it = 1000.*(z2-z1)
     	for i in range(0,it):
     		z = z1 + .001*i
@@ -278,30 +278,30 @@ class distance:
     		#ntot += ev[0]
     		zweighttot += ev[1]
     	ng = ntot/zweighttot/sphfac
-    	print ng,ntot,zweighttot
+    	#print ng,ntot,zweighttot
     	#ng = ntot*spheredeg/obdeg/(4.*pi)/float(it)
     	return ng
 
     def nzvolref(self,zref=.336,dndzfile='nzDR5VL.3.4_mrs'):
-    	indref = int(zref*1000)
-    	#print dndzfile
-    	f = open(dndzfile+'.dat').readlines()
-    	dz = .001
-    	
-    	nzref = float(f[indref].split()[1])    	
-    		
-    	volref = self.dc(zref)**2.*(self.c/self.h0)*self.evolution(zref)*(1.+zref)**-3.*dz
-    	nref = nzref/volref
-    	fileout = dndzfile+'_ref.dat'
-    	fo = open(fileout,'w')
-    	print dndzfile,fileout
-    	for i in range(100,len(f)): #use if you want to start from z=.1
-    	#for i in range(1,len(f)):
-			z = i/1000.+.001
-			vol = self.dc(z)**2.*(self.c/self.h0)*self.evolution(z)*(1.+z)**-3.*dz
-			nVL = nzref*vol/volref
-			dndzf = float(f[i].split()[1])/nVL
-			fo.write(str(z)+' '+str(dndzf)+'\n')
+        indref = int(zref*1000)
+        #print dndzfile
+        f = open(dndzfile+'.dat').readlines()
+        dz = .001
+
+        nzref = float(f[indref].split()[1])    	
+
+        volref = self.dc(zref)**2.*(self.c/self.h0)*self.evolution(zref)*(1.+zref)**-3.*dz
+        nref = nzref/volref
+        fileout = dndzfile+'_ref.dat'
+        fo = open(fileout,'w')
+        #print dndzfile,fileout
+        for i in range(100,len(f)): #use if you want to start from z=.1
+        #for i in range(1,len(f)):
+            z = i/1000.+.001
+            vol = self.dc(z)**2.*(self.c/self.h0)*self.evolution(z)*(1.+z)**-3.*dz
+            nVL = nzref*vol/volref
+            dndzf = float(f[i].split()[1])/nVL
+            fo.write(str(z)+' '+str(dndzf)+'\n')
     
     def sepc(self,z1,z2,theta): # Comoving distance between two objects
 # with redshifts z1, z2 and angular separation of theta degrees in
@@ -359,7 +359,7 @@ class distance:
         return mag - self.Kcorr2(z) - self.dm(z)
     
     def AbsMag_nk(self,mag,z):
-    	return mag - self.dm(z)
+        return mag - self.dm(z)
     
     def AbsMagLRG(self,mag,z):
 # Given an apparent magnitude and redshift return absolute magnitude
@@ -372,15 +372,15 @@ class distance:
 
     def gam(self,z):
 #The exponent for f = omz**gamma RSD models
-		return 3./(5.-self.w/(1.-self.w)) + 3./125.*(1.-self.w)*(1.-1.5*self.w)/(1.-1.2*self.w)**3.*(1.-self.omz(z))
+        return 3./(5.-self.w/(1.-self.w)) + 3./125.*(1.-self.w)*(1.-1.5*self.w)/(1.-1.2*self.w)**3.*(1.-self.omz(z))
 
     def Dg(self,z):
 #The approximate linear growth rate for the w/gamma
-		bA = -.28/(self.w+.08)-.3
-		return 2.5*self.omz(z)/(1.+z)*(self.omz(z)**self.gam(z)-self.olz(z)+(1.+.5*self.omz(z))*(1.+bA*self.olz(z)))**-1.
+        bA = -.28/(self.w+.08)-.3
+        return 2.5*self.omz(z)/(1.+z)*(self.omz(z)**self.gam(z)-self.olz(z)+(1.+.5*self.omz(z))*(1.+bA*self.olz(z)))**-1.
 
     def Dgn(self,z):
-		return self.Dg(z)/self.Dg(0)
+        return self.Dg(z)/self.Dg(0)
 
     def D(self,z):
 # The linear growth factor in the class cosmology as a function of
@@ -410,8 +410,8 @@ class distance:
         return self.Daccurate(z)/self.Daccurate(0)
     
     def Dsimp(self,z):
-    	a = 1./(1.+z)
-    	return exp(log(a)*self.omz(z)**self.gamma)
+        a = 1./(1.+z)
+        return exp(log(a)*self.omz(z)**self.gamma)
     
     def dadtint(self,a):
 # equation 9 of Carrol, Press and Turner (1992) in the class
@@ -424,16 +424,16 @@ class distance:
         return (1.+(self.om*((1./a)-1.))+(self.ol*(a**2.-1)))**0.5
 
     def b0(self,b,z1,z2):
-		#given the bias at one redshift, return the passively evolved bias at the other
-		return 1.+ (b-1.)*self.DaccurateRenorm(z2)/self.DaccurateRenorm(z1)
+        #given the bias at one redshift, return the passively evolved bias at the other
+        return 1.+ (b-1.)*self.DaccurateRenorm(z2)/self.DaccurateRenorm(z1)
 
     def epfac(self,b0,z1,z2):
-    	#return the fraction by which the clustering strength should change for passively evolving objects
-    	return (b0/(b0-1.+self.DaccurateRenorm(z2)/self.DaccurateRenorm(z1)))**2.
+        #return the fraction by which the clustering strength should change for passively evolving objects
+        return (b0/(b0-1.+self.DaccurateRenorm(z2)/self.DaccurateRenorm(z1)))**2.
 
     def evolution_nocos(self,z):
         return 1./(sqrt((1.+z)**3.+(1.+z)**self.fa))
-	
+
     def intevnc(self,z):
         return ((self.c/self.h0)*rom(0,z,self.evolution_nocos))
 
@@ -466,12 +466,12 @@ class Limber:
         self.min = down-(0.5*(up-down)/(bins-1.))
         if self.min <1e-4:
             self.min = 1e-4
-            print "WARNING:********************************************"
-            print "Numerical Integration of Limber's Equation diverges"
-            print "at z = 0 - you *might* choose a larger value of minz"
-            print "or write a better integration program!  For now:\n"
-            print "resetting minimum z to 0.0001"
-            print "WARNING:********************************************"
+            #print "WARNING:********************************************"
+            #print "Numerical Integration of Limber's Equation diverges"
+            #print "at z = 0 - you *might* choose a larger value of minz"
+            #print "or write a better integration program!  For now:\n"
+            #print "resetting minimum z to 0.0001"
+            #print "WARNING:********************************************"
         self.Hgamma = gamfunc(0.5)*gamfunc(0.5*(float(gamma)-1))/gamfunc(0.5*float(gamma))
         self.tol = float(tolerance)
         self.eps = float(epsilon)
@@ -482,9 +482,9 @@ class Limber:
 # regime. There's no epsilon factor - we assume the linear regime
 # value and evolve it with z, using Carrol, Press and Turner (1992)
         check = self.CheckNorm()
-        print "%s %s%s" %('Normalization accurate to',check,'%')
+        #print "%s %s%s" %('Normalization accurate to',check,'%')
         check = 1.-(0.01*check)
-        print 'Integrating........'
+        #print 'Integrating........'
         sleep(5)
         return self.Hgamma*romberg(self.TopFunc,(self.min,self.max),self.tol)/self.c/check
     def TopFunc(self,z): # numerator of Limbers Eqn*self.c
@@ -500,19 +500,19 @@ class Limber:
 # Check that the denominator is normalized to unity (it should
 # be because we call histo.py asking for a normalized interpolation
 # This is particularly useful in determining a value of zmax!
-        print '***********************************************************'
-        print 'Returning % integrated error on normalization of dN/dZ.....'
+        #print '***********************************************************'
+        #print 'Returning % integrated error on normalization of dN/dZ.....'
         return (1.-romberg(self.BotFunc,(self.min,self.max),self.tol))*100.
     def EpsLimber(self):
 # Variant of the integration of Limber's Equation using the
 # Peebles epsilon formalism
         check = self.CheckNorm()
-        print "%s %s%s" %('Normalization accurate to',check,'%')
+        #print "%s %s%s" %('Normalization accurate to',check,'%')
         if check > 0.1 :
-            print 'Normalization fairly inaccurate......'
-            print 'You could try running with a different value of zmax'
-        print 'Integrating........'
-        sleep(5)
+            #print 'Normalization fairly inaccurate......'
+            #print 'You could try running with a different value of zmax'
+        #print 'Integrating........'
+            sleep(5)
         return self.Hgamma*romberg(self.TopFuncEps,(self.min,self.max),self.tol)/self.c
     def TopFuncEps(self,z): # numerator of Limbers Eqn*self.c
         N=interpolate.splev(z,self.dNdZ)
@@ -559,7 +559,7 @@ class Limber:
 # decimal point)
         if flag: sf += 1
 
-        print sf, 'significant figures'
+        #print sf, 'significant figures'
 
         rounder = self.round2sf(err,sf)
         string1 = "%s %s %s %s"%(str(round(A,rounder)),'$\pm$',str(round(err,rounder)),'&')
@@ -568,9 +568,9 @@ class Limber:
         rounder = self.round2sf(berr,sf)
         string3 = "%s %s %s %s"%(str(round(b,rounder)),'$\pm$',str(round(berr,rounder)),'&')
 
-        print 'A=   ', string1
-        print 'r_0=     ', string2
-        print 'b=   ' , string3
+        #print 'A=   ', string1
+        #print 'r_0=     ', string2
+        #print 'b=   ' , string3
 
         return string1, string2, string3
 
@@ -713,7 +713,7 @@ class QSO:
        BHM *= (1+z)**(5./2.)
        BHM *= eps*self.MDMH
        ex = modf(log10(BHM))[1]
-       print "Mass is",BHM*10.**-ex,'x 10 **',ex
+       #print "Mass is",BHM*10.**-ex,'x 10 **',ex
        return BHM
     def MBHFerr(self,z,instance=1):
 # Determine the Black Hole Mass from the Dark Matter Halo mass
@@ -730,24 +730,24 @@ class QSO:
        if instance == 1:
            BHM=1e8*0.027*(self.MDMH/1e12)**1.82
            ex = modf(log10(BHM))[1]
-           print "Mass is",BHM*10.**-ex,'x 10 **',ex
+           #print "Mass is",BHM*10.**-ex,'x 10 **',ex
            return BHM
        if instance == 2:
            BHM=1e8*0.1*(self.MDMH/1e12)**1.65
            ex = modf(log10(BHM))[1]
-           print "Mass is",BHM*10.**-ex,'x 10 **',ex
+           #print "Mass is",BHM*10.**-ex,'x 10 **',ex
            return BHM
        if instance == 3:
            BHM=1e8*0.67*(self.MDMH/1e12)**1.82
            ex = modf(log10(BHM))[1]
-           print "Mass is",BHM*10.**-ex,'x 10 **',ex
+           #print "Mass is",BHM*10.**-ex,'x 10 **',ex
            return BHM
     def LEdd(self,BHM):
 # Eddington Limiting Luminosity in Watts given the Black Hole Mass
 # in solar masses
         L = (BHM/1e8)*10.**39.1
         ex = modf(log10(L))[1]
-        print "Eddington Luminosity is",L*10.**-ex,'x 10 **',ex
+        #print "Eddington Luminosity is",L*10.**-ex,'x 10 **',ex
         return L
     def BolfromM(self,M,alph=-0.5,reflam=2500,measlam=4669,Lbolmult=[6.3,3.2,9.4]):
 # Given a bolometric luminosity, return the absolute magnitude
